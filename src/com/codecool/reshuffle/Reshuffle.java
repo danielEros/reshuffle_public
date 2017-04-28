@@ -18,11 +18,11 @@ public class Reshuffle {
     public void loadOldTeams(String fileName) {
         oldTeams.clear();
         try {
-            Scanner s = new Scanner(new File(fileName)).useDelimiter("\n");
+            Scanner s = new Scanner(new File(fileName));
             Team team = null;
             while (s.hasNext()) {
                 String nextLine = s.next();
-                if (nextLine.isEmpty()) {
+                if (nextLine.contentEquals("#")) {
                     team = null;
                 } else {
                     if (team == null) {
