@@ -2,9 +2,7 @@ package com.codecool.reshuffle;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Reshuffle {
 
@@ -14,6 +12,10 @@ public class Reshuffle {
     public void letsRoll() {
         System.out.println("Some magic happens here");
 
+        if(oldTeams.size()<4){
+            System.out.println("Reshuffle cannot be done with less than 4 groups");
+            return;
+        }
         for(int i=0; i<oldTeams.size(); i++) {
             Team newTeam = new Team();
             for(int j=0; j<oldTeams.get(i).getMembers().size(); j++){
@@ -63,12 +65,40 @@ public class Reshuffle {
         System.out.println("New: " + newTeams);
     }
 
+    public void testResults(){
+        /**
+         * Creating formerMembersOf map with key values of each student, the values
+         * hold lists of names of former teammates
+         */
+        Map<String, List<String>> formerMembersOf = new TreeMap<>();
+        for(int i=0; i<oldTeams.size(); i++) {
+            for (int j=0; j < oldTeams.get(i).getMembers().size(); j++) {
+                String key = oldTeams.get(i).getMembers().get(j);
+                List<String> valueList = new ArrayList<>();
+                for(int k=1; k<4; k++) {
+                    String member = oldTeams.get(i).getMembers().get((j + k) % 4);
+                    if(!member.equals("empty")){
+                        valueList.add(member);
+                    }
+                }
+                formerMembersOf.put(key, valueList);
+            }
+        }
+        System.out.println(formerMembersOf);
+
+        /**
+         * For each student check if any of their teammates was their teammate
+         * in the previous round
+         */
+    }
+
     public static void main(String[] args) {
         Reshuffle reshuffle = new Reshuffle();
         reshuffle.loadOldTeams("resources/teams_sample.txt");
         reshuffle.printOldTeams();
         reshuffle.letsRoll();
         reshuffle.printNewTeams();
+        reshuffle.testResults();
     }
 
 }
