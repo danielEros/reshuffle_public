@@ -13,6 +13,15 @@ public class Reshuffle {
 
     public void letsRoll() {
         System.out.println("Some magic happens here");
+
+        for(int i=0; i<oldTeams.size(); i++) {
+            Team newTeam = new Team();
+            for(int j=0; j<oldTeams.get(i).getMembers().size(); j++){
+                int oldTeamIndex = (i+j) % oldTeams.size();
+                newTeam.addMember(oldTeams.get(oldTeamIndex).getMembers().get(j));
+            }
+            newTeams.add(newTeam);
+        }
     }
 
     public void loadOldTeams(String fileName) {
@@ -20,16 +29,24 @@ public class Reshuffle {
         try {
             Scanner s = new Scanner(new File(fileName));
             Team team = null;
+            int counter = 0;
             while (s.hasNext()) {
                 String nextLine = s.next();
                 if (nextLine.contentEquals("#")) {
+                    if (counter < 4){
+                        for(int i=0; i<4-counter; i++){
+                            team.addMember("empty");
+                        }
+                    }
                     team = null;
+                    counter = 0;
                 } else {
                     if (team == null) {
                         team = new Team();
                         oldTeams.add(team);
                     }
                     team.addMember(nextLine);
+                    counter++;
                 }
             }
             s.close();
