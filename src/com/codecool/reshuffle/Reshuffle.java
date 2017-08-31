@@ -95,20 +95,24 @@ public class Reshuffle {
                 String currentName = newTeams.get(i).getMembers().get(j);
                 System.out.print("Testing student " + currentName + ". Old teammates were " + formerMembersOf.get(currentName));
                 List<String> newMembers = new ArrayList<>();
+                boolean testFailed = false;
                 for(int k=1; k<4; k++) {
                     String newMember = newTeams.get(i).getMembers().get((j + k) % 4);
                     if(!newMember.equals("empty")){
                         newMembers.add(newMember);
-                        if(formerMembersOf.get(currentName).indexOf(newMember) > 0){
-                            System.out.println("\nThere is an overlap between the old and new teams, test terminates!");
-                            return;
+                        if(formerMembersOf.get(currentName).indexOf(newMember) > -1){
+                            testFailed = true;
                         }
                     }
                 }
-                System.out.print(". New teammates are: " + newMembers + " Test passed!\n");
+                System.out.print(". New teammates are: " + newMembers + ".\n");
+                if(testFailed){
+                    System.out.println("\nThere is an overlap between the old and new teams, test terminates!");
+                    return;
+                }
             }
         }
-        System.out.println("That's nice, everybody has new teamates :)");
+        System.out.println("That's nice, everybody has new teammates :)");
     }
 
     public static void main(String[] args) {
