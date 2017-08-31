@@ -14,7 +14,7 @@ public class Reshuffle {
 
         if(oldTeams.size()<4){
             System.out.println("Reshuffle cannot be done with less than 4 groups");
-            return;
+            System.exit(0);
         }
         for(int i=0; i<oldTeams.size(); i++) {
             Team newTeam = new Team();
