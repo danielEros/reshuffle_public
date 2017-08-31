@@ -70,8 +70,9 @@ public class Reshuffle {
          * Creating formerMembersOf map with key values of each student, the values
          * hold lists of names of former teammates
          */
+        System.out.println("Testing the reults:");
         Map<String, List<String>> formerMembersOf = new TreeMap<>();
-        for(int i=0; i<oldTeams.size(); i++) {
+        for(int i=0; i<newTeams.size(); i++) {
             for (int j=0; j < oldTeams.get(i).getMembers().size(); j++) {
                 String key = oldTeams.get(i).getMembers().get(j);
                 List<String> valueList = new ArrayList<>();
@@ -84,12 +85,30 @@ public class Reshuffle {
                 formerMembersOf.put(key, valueList);
             }
         }
-        System.out.println(formerMembersOf);
 
         /**
          * For each student check if any of their teammates was their teammate
          * in the previous round
          */
+        for(int i=0; i<newTeams.size(); i++) {
+            for (int j=0; j < newTeams.get(i).getMembers().size(); j++) {
+                String currentName = newTeams.get(i).getMembers().get(j);
+                System.out.print("Testing student " + currentName + ". Old teammates were " + formerMembersOf.get(currentName));
+                List<String> newMembers = new ArrayList<>();
+                for(int k=1; k<4; k++) {
+                    String newMember = newTeams.get(i).getMembers().get((j + k) % 4);
+                    if(!newMember.equals("empty")){
+                        newMembers.add(newMember);
+                        if(formerMembersOf.get(currentName).indexOf(newMember) > 0){
+                            System.out.println("\nThere is an overlap between the old and new teams, test terminates!");
+                            return;
+                        }
+                    }
+                }
+                System.out.print(". New teammates are: " + newMembers + " Test passed!\n");
+            }
+        }
+        System.out.println("That's nice, everybody has new teamates :)");
     }
 
     public static void main(String[] args) {
